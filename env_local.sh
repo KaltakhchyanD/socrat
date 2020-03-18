@@ -1,0 +1,11 @@
+export FLASK_APP=webapp
+export FLASK_ENV=development
+export IN_DOCKER=0
+export ADMIN_USER=bruh
+export ADMIN_EMAIL=rafikrafikrafik@yandex.ru
+export ADMIN_PASSWORD=123
+export DB_NAME=socrat
+export DB_USER=daniel
+export DB_PASSWORD=1234
+export DB_HOST=db
+export SECRET_KEY=secretkey1
