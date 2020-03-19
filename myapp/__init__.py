@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 from flask_login import LoginManager, current_user, login_user
 from flask_migrate import Migrate 
 
@@ -20,9 +20,15 @@ def create_app():
     def index():
         return render_template('index.html')
 
+    @app.route('/<string:link>')
+    def ya_page(link):
+        if link=="ya":
+            return redirect('https://yandex.ru')
+        #return render_template('index.html')
+
     return app
 
 
-if __name__ == '__main__':
-    app = create_app()
-    app.run(port=5500, debug=True)
+#if __name__ == '__main__':
+#    app = create_app()
+#    app.run(port=5500, debug=True)
