@@ -3,7 +3,7 @@ from flask_login import LoginManager, current_user, login_user
 from flask_migrate import Migrate 
 
 from myapp.config import Config
-from myapp.database import db, ma
+from myapp.models import db, ma
 
 def create_app():
     app = Flask(__name__)
