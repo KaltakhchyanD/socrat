@@ -1,4 +1,4 @@
-class ShortURL:
+class URLShortener:
     """
     ShortURL: Bijective conversion between natural numbers (IDs) and short strings
     ShortURL.encode() takes an ID and turns it into a short string
@@ -11,12 +11,12 @@ class ShortURL:
     123456789 <=> pgK8p
     """
 
-    _alphabet = '23456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ-_'
+    _alphabet = "23456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ-_"
     _base = len(_alphabet)
 
     def encode(self, number):
-        string = ''
-        while(number > 0):
+        string = ""
+        while number > 0:
             string = self._alphabet[number % self._base] + string
             number //= self._base
         return string
