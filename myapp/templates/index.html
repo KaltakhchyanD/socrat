@@ -1,28 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container-fluid">
-
-
-        <div class="col-md-8">
-            <div class="mx-auto">
-
+    <div class="col-md-8">
+        <div class="mx-auto">
             <h1>Hi there</h1>
             <img src="/static/images/socrates.png" width="350" height="450">
             <h2>This is Socrat<del>es</del> - URL shortener!</h2>
-              <div class="container">
-
-                <form>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Paste Long URL bellow!</label>
-                    <input type="text" class="form-control" id="Long url">
-                  </div>
-                </form>
-                <button name="SendLongURL" type="button" class="btn btn-danger">Get short URL!</button>
-
-            </div>
+                <div class="container">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Paste Long URL bellow!</label>
+                            <input type="text" class="form-control" id="LongUrl">
+                        </div>
+                    </form>
+                    <button name="SendLongURL" type="button" class="btn btn-danger">Get short URL!</button>
+                </div>
+            <div id="result_link"></div>
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 {% block scripts%}
