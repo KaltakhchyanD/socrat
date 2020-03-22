@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 
 from myapp.config import Config
 from myapp.models import db, ma
+from myapp.api.v1.link.views import blueprint as short_link_blueprint
 
 
 def create_app():
@@ -11,11 +12,10 @@ def create_app():
     app.config.from_object(Config)
     db.init_app(app)
     ma.init_app(app)
-    # login_manager = LoginManager()
-    # login_manager.init_app(app)
     migrate = Migrate(app, db)
 
     app.jinja_env.globals.update(__builtins__)
+    app.register_blueprint(short_link_blueprint)
 
     @app.route("/")
     def index():
@@ -25,11 +25,5 @@ def create_app():
     def ya_page(link):
         if link == "ya":
             return redirect("https://yandex.ru")
-        # return render_template('index.html')
 
     return app
-
-
-# if __name__ == '__main__':
-#    app = create_app()
-#    app.run(port=5500, debug=True)
