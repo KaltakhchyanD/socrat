@@ -5,21 +5,28 @@ from myapp.models import db, ShortUrl
 from myapp.api.v1.link.models import ShortUrlSchema
 from myapp.utils import URLShortener
 
-blueprint = Blueprint("rest_api", __name__, url_prefix="api/v1/short")
+blueprint = Blueprint("rest_api", __name__, url_prefix="/api/v1/short")
 
 
 @blueprint.route("/", methods=["POST"])
 def make_short_url():
     schema = ShortUrlSchema()
     json_from_request = request.get_json()
-    
+
     # Validate that url is valid
     # If not - abort
-    if not validators.url(json_from_request.long_url):
+    if not validators.url(json_from_request["long_url"]):
         abort(404, f"This is not a valid URL!")
 
     short_url_from_json = schema.load(json_from_request)
-    short_url_from_json.short_url = URLShortener.encode(short_url_from_json.id)
+
+    # Check that entry is not in db already!
+    # Otherwise - many similar entries with same site
+    db.session.add(short_url_from_json)
+    db.session.commit()
+
+    url_shortener = URLShortener()
+    short_url_from_json.short_url = url_shortener.encode(short_url_from_json.id)
 
     db.session.add(short_url_from_json)
     db.session.commit()
