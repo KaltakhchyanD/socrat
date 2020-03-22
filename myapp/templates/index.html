@@ -1,5 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Hi there</h1>
+<div class="container-fluid">
+
+
+        <div class="col-md-8">
+            <div class="mx-auto">
+
+            <h1>Hi there</h1>
+            <img src="/static/images/socrates.png" width="350" height="450">
+            <h2>This is Socrat<del>es</del> - URL shortener!</h2>
+              <div class="container">
+
+                <form>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Paste Long URL bellow!</label>
+                    <input type="text" class="form-control" id="Long url">
+                  </div>
+                </form>
+                <button name="SendLongURL" type="button" class="btn btn-danger">Get short URL!</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
+{% block scripts%}
+  {{ super() }}
+  <script type="module">
+      // Give the imported MVC components a namespace
+      import * as MVC from "/static/js/short_url/short_url.js";
+
+      // Create an intentional global variable referencing the import
+      window.mvc = MVC;
+  </script>
+{% endblock %}
