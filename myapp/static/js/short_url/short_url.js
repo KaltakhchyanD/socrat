@@ -20,9 +20,15 @@ class Model {
 
 class View {
     show_short_link(link){
-        let data_html = "<h3>Here is your short link!</h3>" 
-        data_html+="<a href=\""+link +"\">"+window.location.href+link+ "</a>"
-        $("#result_link").html(data_html); 
+        let data_html ="<br>"
+        data_html+= "<h3>Here is your short link!</h3>" 
+        data_html+="<div class=input-group mb-3>"
+        data_html+="<input type=\"text\" class=\"form-control\" area-describedby=\"basic-addon2\" value=\""+window.location.href+link+ "\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Click button to copy\" id=\"text2copy\">  "
+        data_html+="<div class\"input-group-append\">"
+        data_html+="<button name=\"CopyButton\" class=\"btn btn-outline-secondary\" type=\"button\" >Click to copy</button>  "
+        data_html+="</div>"
+        data_html+="</div>"
+        $("#result_link").html(data_html);
     }
 }
 
@@ -45,6 +51,8 @@ class Controller{
             }
             let short_url = await this.model.create(create_json);
             this.view.show_short_link(short_url['short_url']);
+            $('[data-toggle="tooltip"]').tooltip();
+            this.initializeCopyButtonEvent();
         } catch(err) {
             console.log(err)
         }
@@ -55,6 +63,23 @@ class Controller{
         for (const some_button of send_buttons){
             some_button.addEventListener ("click", (evt) =>this.send_create_button_action(evt, some_button));
         }
+    }
+
+    initializeCopyButtonEvent(){
+        let copy_buttons = $( ":button[name^='CopyButton']" );
+        for (const some_button of copy_buttons){
+            some_button.addEventListener ("click", (evt) =>this.myFunction(evt));
+        }
+    }
+
+    myFunction(evt) {
+        evt.preventDefault();
+        var copyText = document.getElementById("text2copy");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        $('[data-toggle="tooltip"]').attr('title', 'Copied!').tooltip('dispose').tooltip({title: 'Copied!'});
+        $('[data-toggle="tooltip"]').tooltip('show');
     }
 }
 
