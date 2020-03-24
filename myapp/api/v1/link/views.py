@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, jsonify, request, make_response
 import validators
 
-from myapp.models import db, ShortUrl
+from myapp.models import db, ShortUrl, Click
 from myapp.api.v1.link.models import ShortUrlSchema
 from myapp.utils import URLShortener
 
@@ -27,8 +27,20 @@ def make_short_url():
 
     url_shortener = URLShortener()
     short_url_from_json.short_url = url_shortener.encode(short_url_from_json.id)
-
     db.session.add(short_url_from_json)
+
+    click_db_entry = Click(short_url=short_url_from_json.short_url, number_of_clicks=0, short_url_id=short_url_from_json.id)
+    print(f"At api click - {click_db_entry}")
+
+    #click_db_entry = Click(short_url=short_url_from_json.short_url, number_of_clicks=0)
+    db.session.add(click_db_entry)
+    #short_url_from_json.clicks.append(click_db_entry)
+
+    print(f"At api short_url_from_json - {short_url_from_json}")
+    #db.session.add(short_url_from_json)
+
+
     db.session.commit()
+
 
     return schema.dump(short_url_from_json), 200

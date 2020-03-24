@@ -37,6 +37,11 @@ def create_app():
         if not validators.url(long_url):
             abort(404, f"This long url is not a valid URL!")
 
+        print(f"Clicks b4 - {long_url_db_entry.clicks}")
+        long_url_db_entry.clicks[0].number_of_clicks += 1
+        db.session.commit()
+        print(f"Clicks after - {long_url_db_entry.clicks[0]}")
+
         return redirect(long_url)
 
     return app

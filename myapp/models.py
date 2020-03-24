@@ -15,7 +15,7 @@ class ShortUrl(db.Model):
     )
 
     def __repr__(self):
-        return f"Short URL db entry {self.id} from long {self.long_url}"
+        return f"Short URL db entry {self.id} from long {self.long_url} with clicks {self.clicks}"
 
 
 class Click(db.Model):
