@@ -10,6 +10,9 @@ class ShortUrl(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     long_url = db.Column(db.String, nullable=False)
     short_url = db.Column(db.String)
+    clicks = db.relationship(
+        "Click", backref="long_url", cascade="delete, delete-orphan"
+    )
 
     def __repr__(self):
         return f"Short URL db entry {self.id} from long {self.long_url}"

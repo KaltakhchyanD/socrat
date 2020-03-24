@@ -31,7 +31,6 @@ def create_app():
         if not long_url_db_entry:
             abort(404, f"This short link is not valid")
         long_url = long_url_db_entry.long_url
-        print(f"LOng one - {long_url}")
 
         # Just in case
         # Its good practise to check data on entry and exit
