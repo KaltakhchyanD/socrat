@@ -29,18 +29,11 @@ def make_short_url():
     short_url_from_json.short_url = url_shortener.encode(short_url_from_json.id)
     db.session.add(short_url_from_json)
 
-    click_db_entry = Click(short_url=short_url_from_json.short_url, number_of_clicks=0, short_url_id=short_url_from_json.id)
-    print(f"At api click - {click_db_entry}")
-
-    #click_db_entry = Click(short_url=short_url_from_json.short_url, number_of_clicks=0)
+    # click_db_entry = Click(short_url=short_url_from_json.short_url, number_of_clicks=0, short_url_id=short_url_from_json.id)
+    click_db_entry = Click(short_url=short_url_from_json.short_url, number_of_clicks=0)
+    # This is nessesery to ADD NEW object to SESSION
     db.session.add(click_db_entry)
-    #short_url_from_json.clicks.append(click_db_entry)
-
-    print(f"At api short_url_from_json - {short_url_from_json}")
-    #db.session.add(short_url_from_json)
-
-
+    short_url_from_json.clicks.append(click_db_entry)
     db.session.commit()
-
 
     return schema.dump(short_url_from_json), 200
