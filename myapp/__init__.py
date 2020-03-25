@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, abort
 from flask_login import LoginManager, current_user, login_user
 from flask_migrate import Migrate
 import validators
@@ -26,7 +26,12 @@ def create_app():
     @app.route("/<string:link>")
     def redirect_to_long_url(link):
         url_shortener = URLShortener()
-        long_url_id = url_shortener.decode(link)
+        # In case that link contains unsupported by url_shortener chars
+        try:
+            long_url_id = url_shortener.decode(link)
+        except ValueError:
+            abort(404, f"This short link is not valid")
+
         long_url_db_entry = ShortUrl.query.filter_by(id=long_url_id).first()
         if not long_url_db_entry:
             abort(404, f"This short link is not valid")
@@ -42,5 +47,9 @@ def create_app():
         db.session.commit()
 
         return redirect(long_url)
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return render_template("404.html"), 404
 
     return app
