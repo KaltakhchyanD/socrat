@@ -12,9 +12,10 @@ class Model {
         };
         let endpoint_url = "api/v1/short/";
         // Call the REST endpoint and wait for data
+
+        // Return response instead of data to check for bad requests in Controller!
         let response = await fetch(endpoint_url, options);
-        let data = await response.json();
-        return data;
+        return response;
     }
 }
 
@@ -28,6 +29,11 @@ class View {
         data_html+="<button name=\"CopyButton\" class=\"btn btn-outline-secondary\" type=\"button\" >Click to copy</button>  "
         data_html+="</div>"
         data_html+="</div>"
+        $("#result_link").html(data_html);
+    }
+    show_bad_long_url(){
+        let data_html ="<br>"
+        data_html+="<p>This URL you gave me is not valid! Try better next time</p>"
         $("#result_link").html(data_html);
     }
 }
@@ -49,10 +55,15 @@ class Controller{
             let create_json = {
                 "long_url":$("#LongUrl").val()
             }
-            let short_url = await this.model.create(create_json);
-            this.view.show_short_link(short_url['short_url']);
-            $('[data-toggle="tooltip"]').tooltip();
-            this.initializeCopyButtonEvent();
+            let response = await this.model.create(create_json);
+            if (response['status']==400) {
+                this.view.show_bad_long_url();
+            } else if (response['status']==200){
+                let short_url = await response.json();
+                this.view.show_short_link(short_url['short_url']);
+                $('[data-toggle="tooltip"]').tooltip();
+                this.initializeCopyButtonEvent();
+            }
         } catch(err) {
             console.log(err)
         }

@@ -14,9 +14,11 @@ def make_short_url():
     json_from_request = request.get_json()
 
     # Validate that url is valid
-    # If not - abort
+    # If not - return json with 400
     if not validators.url(json_from_request["long_url"]):
-        abort(404, f"This is not a valid URL!")
+        return make_response(
+            jsonify({"errors": [{"code": 123, "message": "Bad long url"}]}), 400
+        )
 
     short_url_from_json = schema.load(json_from_request)
 
