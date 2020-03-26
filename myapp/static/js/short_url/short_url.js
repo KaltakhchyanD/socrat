@@ -57,6 +57,36 @@ class Controller{
 
     async initialize() {
         this.initializeButtonEvent();
+        $(document).ready(function() {
+            $('#socrat_img').each(function() {
+                var maxWidth = $(window).height()*0.7; // Max width for the image
+                var maxHeight = $(window).width()*0.9;    // Max height for the image
+                var ratio = 0;  // Used for aspect ratio
+                var width = $(this).width();    // Current image width
+                var height = $(this).height();  // Current image height
+                console.log("maxW, maxH, w, h");
+                console.log(maxWidth, maxHeight, width, height);
+                // Check if the current width is larger than the max
+                if(width > maxWidth){
+                    ratio = maxWidth / width;   // get ratio for scaling image
+                    console.log("Shrinking width by "+ratio);
+                    $(this).css("width", maxWidth); // Set new width
+                    $(this).css("height", height * ratio);  // Scale height based on ratio
+                    height = height * ratio;    // Reset height to match scaled image
+                    width = width * ratio;    // Reset width to match scaled image
+                }
+
+                // Check if current height is larger than max
+                if(height > maxHeight){
+                    ratio = maxHeight / height; // get ratio for scaling image
+                    console.log("Shrinking height by "+ratio);
+                    $(this).css("height", maxHeight);   // Set new height
+                    $(this).css("width", width * ratio);    // Scale width based on ratio
+                    width = width * ratio;    // Reset width to match scaled image
+                    height = height * ratio;    // Reset height to match scaled image
+                }
+            });
+        });
     }
 
     async send_create_button_action(evt, button){
