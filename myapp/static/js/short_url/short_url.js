@@ -31,9 +31,16 @@ class View {
         data_html+="</div>"
         $("#result_link").html(data_html);
     }
+
     show_bad_long_url(){
         let data_html ="<br>"
         data_html+="<p>This URL you gave me is not valid! Try better next time</p>"
+        $("#result_link").html(data_html);
+    }
+
+    show_custom_400_error(message){
+        let data_html ="<br>"
+        data_html+="<p>"+message+"</p>"
         $("#result_link").html(data_html);
     }
 }
@@ -57,7 +64,14 @@ class Controller{
             }
             let response = await this.model.create(create_json);
             if (response['status']==400) {
-                this.view.show_bad_long_url();
+                let error_json = await response.json();
+                let error_code = error_json['errors'][0]["code"];
+                if (error_code==1){
+                    this.view.show_bad_long_url();
+                } else if (error_code==2) {
+                    this.view.show_custom_400_error(error_json['errors'][0]["message"]);
+                }
+
             } else if (response['status']==200){
                 let short_url = await response.json();
                 this.view.show_short_link(short_url['short_url']);
