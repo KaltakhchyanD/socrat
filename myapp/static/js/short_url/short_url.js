@@ -35,14 +35,14 @@ class View {
 
     show_bad_long_url(){
         let data_html ="<br>"
-        data_html+="<p>This URL you gave me is not valid! Try better next time</p>"
+        data_html+="<h4>This URL you gave me is not valid! Try better next time</h4>"
         data_html+="<br>"
         $("#result_link").html(data_html);
     }
 
     show_custom_400_error(message){
         let data_html ="<br>"
-        data_html+="<p>"+message+"</p>"
+        data_html+="<h4>"+message+"</h4>"
         data_html+="<br>"
         $("#result_link").html(data_html);
     }
