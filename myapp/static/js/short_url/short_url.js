@@ -29,18 +29,21 @@ class View {
         data_html+="<button name=\"CopyButton\" class=\"btn btn-outline-secondary\" type=\"button\" >Click to copy</button>  "
         data_html+="</div>"
         data_html+="</div>"
+        data_html+="<br>"
         $("#result_link").html(data_html);
     }
 
     show_bad_long_url(){
         let data_html ="<br>"
         data_html+="<p>This URL you gave me is not valid! Try better next time</p>"
+        data_html+="<br>"
         $("#result_link").html(data_html);
     }
 
     show_custom_400_error(message){
         let data_html ="<br>"
         data_html+="<p>"+message+"</p>"
+        data_html+="<br>"
         $("#result_link").html(data_html);
     }
 }
