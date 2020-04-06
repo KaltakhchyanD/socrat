@@ -17,7 +17,7 @@ class ShortUrl(db.Model):
     long_url = db.Column(db.String, nullable=False)
     short_url = db.Column(db.String)
     clicks = db.relationship(
-        "Click", backref="long_url", cascade="delete, delete-orphan"
+        "Click", uselist=False, backref="long_url", cascade="delete, delete-orphan"
     )
 
     def __repr__(self):
