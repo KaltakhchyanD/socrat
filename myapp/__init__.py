@@ -85,7 +85,6 @@ def create_app():
     @admin_required
     @app.route("/admin")
     def admin_view():
-        # links = ShortUrl.query.order_by(db.desc(ShortUrl.id)).limit(10).all()
         links = (
             ShortUrl.query.join(ShortUrl.clicks)
             .order_by(db.desc(Click.number_of_clicks))

@@ -14,8 +14,7 @@
                                 <tr>
                                     <th scope="row">{{ index+1 }}</th>
                                     <td>{{ db_entry.long_url }}</td>
-                                    # URL FOR /index (db_entry.short_url)
-                                    <td>{{ db_entry.short_url }}</td>
+                                    <td>{{ url_for("redirect_to_long_url", link = links[0].short_url, _external=True) }}</td>
                                     <td>{{ db_entry.clicks.number_of_clicks }}</td>
                                 </tr>
                             {% endfor %}
