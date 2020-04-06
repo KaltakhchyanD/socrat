@@ -10,7 +10,7 @@ from flask_migrate import Migrate
 import validators
 
 from myapp.config import Config
-from myapp.models import db, ma, ShortUrl, User
+from myapp.models import db, ma, ShortUrl, User, Click
 from myapp.utils import URLShortener, admin_required
 from myapp.api.v1.link.views import blueprint as short_link_blueprint
 from myapp.forms import LoginForm
@@ -85,11 +85,13 @@ def create_app():
     @admin_required
     @app.route("/admin")
     def admin_view():
-        links = ShortUrl.query.order_by(db.desc(ShortUrl.id)).limit(10).all()
-        #print(f"{links[0]}")
-        #print(f"{links[0].long_url }")
-        #print(f"{links[0].short_url}")
-        #print(f"{links[0].clicks.number_of_clicks}")
+        # links = ShortUrl.query.order_by(db.desc(ShortUrl.id)).limit(10).all()
+        links = (
+            ShortUrl.query.join(ShortUrl.clicks)
+            .order_by(db.desc(Click.number_of_clicks))
+            .limit(10)
+            .all()
+        )
         return render_template("admin.html", links=links)
 
     @app.route("/logout")
