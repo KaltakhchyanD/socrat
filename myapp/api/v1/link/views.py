@@ -37,22 +37,26 @@ def make_short_url():
             400,
         )
 
-    short_url_from_json = schema.load(json_from_request)
+    long_to_short_url_from_json = schema.load(json_from_request)
 
     # Check that entry is not in db already!
     # Otherwise - many similar entries with same site
-    db.session.add(short_url_from_json)
+    db.session.add(long_to_short_url_from_json)
     db.session.commit()
 
     url_shortener = URLShortener()
-    short_url_from_json.short_url = url_shortener.encode(short_url_from_json.id)
-    db.session.add(short_url_from_json)
+    long_to_short_url_from_json.short_url = url_shortener.encode(
+        long_to_short_url_from_json.id
+    )
+    db.session.add(long_to_short_url_from_json)
 
-    # click_db_entry = Click(short_url=short_url_from_json.short_url, number_of_clicks=0, short_url_id=short_url_from_json.id)
-    click_db_entry = Click(short_url=short_url_from_json.short_url, number_of_clicks=0)
+    # click_db_entry = Click(short_url=long_to_short_url_from_json.short_url, number_of_clicks=0, short_url_id=long_to_short_url_from_json.id)
+    click_db_entry = Click(
+        short_url=long_to_short_url_from_json.short_url, number_of_clicks=0
+    )
     # This is nessesery to ADD NEW object to SESSION
     db.session.add(click_db_entry)
-    short_url_from_json.clicks.append(click_db_entry)
+    long_to_short_url_from_json.clicks = click_db_entry
     db.session.commit()
 
-    return schema.dump(short_url_from_json), 200
+    return schema.dump(long_to_short_url_from_json), 200

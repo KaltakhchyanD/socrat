@@ -56,7 +56,7 @@ def create_app():
             abort(404, f"This long url is not a valid URL!")
 
         # On click increase number of Clicks
-        long_url_db_entry.clicks[0].number_of_clicks += 1
+        long_url_db_entry.clicks.number_of_clicks += 1
         db.session.commit()
 
         return redirect(long_url)
