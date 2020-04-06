@@ -10,7 +10,7 @@ class Config:
     if PRODUCTION:
         SESSION_COOKIE_SECURE = True
         REMEMBER_COOKIE_SECURE = True
-        SERVER_NAME = "giftforfriend.ru"
+        SERVER_NAME = "socrat.xyz"
         PREFERRED_URL_SCHEME = "https"
 
     db_name = os.getenv("DB_NAME")

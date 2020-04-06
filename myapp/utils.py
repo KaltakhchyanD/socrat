@@ -1,3 +1,6 @@
+from functools import wraps
+
+
 class URLShortener:
     """
     ShortURL: Bijective conversion between natural numbers (IDs) and short strings
@@ -26,3 +29,16 @@ class URLShortener:
         for char in string:
             number = number * self._base + self._alphabet.index(char)
         return number
+
+
+def admin_required(func):
+    @wraps(func)
+    def inner_func(*args, **kwargs):
+        if current_user.is_admin:
+            return func(*args, **kwargs)
+        else:
+            print(f"Error referer - {request.referrer}")
+            flash("You are not an admin!")
+            return redirect(url_for(request.referrer or "index"))
+
+    return inner_func

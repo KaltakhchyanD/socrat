@@ -1,12 +1,19 @@
-from flask import Flask, render_template, request, url_for, redirect, abort
-from flask_login import LoginManager, current_user, login_user
+from flask import Flask, render_template, request, url_for, redirect, abort, flash
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_user,
+    login_required,
+    logout_user,
+)
 from flask_migrate import Migrate
 import validators
 
 from myapp.config import Config
-from myapp.models import db, ma, ShortUrl
-from myapp.utils import URLShortener
+from myapp.models import db, ma, ShortUrl, User
+from myapp.utils import URLShortener, admin_required
 from myapp.api.v1.link.views import blueprint as short_link_blueprint
+from myapp.forms import LoginForm
 
 
 def create_app():
@@ -15,9 +22,15 @@ def create_app():
     db.init_app(app)
     ma.init_app(app)
     migrate = Migrate(app, db)
+    login_manager = LoginManager()
+    login_manager.init_app(app)
 
     app.jinja_env.globals.update(__builtins__)
     app.register_blueprint(short_link_blueprint)
+
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
 
     @app.route("/")
     def index():
@@ -47,6 +60,38 @@ def create_app():
         db.session.commit()
 
         return redirect(long_url)
+
+    @app.route("/admin_login", methods=["GET", "POST"])
+    def login_for_admin():
+        print(f"Referer - {request.referrer}")
+        if current_user.is_authenticated:
+            flash("You are already logged in!")
+            # NO redirect to referer, coz there is no referer
+            return redirect(url_for("index"))
+
+        login_form = LoginForm()
+        if login_form.validate_on_submit():
+            user = User.query.filter_by(username=login_form.username.data).first()
+            if user and user.check_password(password=login_form.password.data):
+                login_user(user, remember=True)
+                flash("You are now logged in!")
+                # NO redirect to referer, coz there is no referer
+                return redirect(url_for("index"))
+            else:
+                flash("Invalid username or password")
+                return redirect(url_for("login_for_admin"))
+        return render_template("login.html", form=login_form)
+
+    @admin_required
+    @app.route("/admin")
+    def admin_view():
+        return "<h1>HI ADMIN</h1>"
+
+    @app.route("/logout")
+    @login_required
+    def logout():
+        logout_user()
+        return redirect(url_for("index"))
 
     @app.errorhandler(404)
     def not_found(error):
