@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Long URL</th>
+                                <th scope="col">Short URL</th>
+                                <th scope="col">clicks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for index, db_entry in enumerate(links) %}
+                                <tr>
+                                    <th scope="row">{{ index+1 }}</th>
+                                    <td>{{ db_entry.long_url }}</td>
+                                    # URL FOR /index (db_entry.short_url)
+                                    <td>{{ db_entry.short_url }}</td>
+                                    <td>{{ db_entry.clicks.number_of_clicks }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+{% endblock %}

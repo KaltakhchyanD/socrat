@@ -85,7 +85,12 @@ def create_app():
     @admin_required
     @app.route("/admin")
     def admin_view():
-        return "<h1>HI ADMIN</h1>"
+        links = ShortUrl.query.order_by(db.desc(ShortUrl.id)).limit(10).all()
+        #print(f"{links[0]}")
+        #print(f"{links[0].long_url }")
+        #print(f"{links[0].short_url}")
+        #print(f"{links[0].clicks.number_of_clicks}")
+        return render_template("admin.html", links=links)
 
     @app.route("/logout")
     @login_required
