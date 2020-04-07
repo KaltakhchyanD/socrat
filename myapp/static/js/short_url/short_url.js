@@ -21,10 +21,11 @@ class Model {
 
 class View {
     show_short_link(link){
+        let current_path = window.location.href.split("?")[0];
         let data_html ="<br>"
         data_html+= "<h3>Here is your short link!</h3>" 
         data_html+="<div class=input-group mb-3>"
-        data_html+="<input type=\"text\" class=\"form-control\" area-describedby=\"basic-addon2\" value=\""+window.location.href.replace('?', '')+link+ "\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Click button to copy\" id=\"text2copy\">  "
+        data_html+="<input type=\"text\" class=\"form-control\" area-describedby=\"basic-addon2\" value=\""+current_path+link+ "\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Click button to copy\" id=\"text2copy\">  "
         data_html+="<div class\"input-group-append\">"
         data_html+="<button name=\"CopyButton\" class=\"btn btn-outline-secondary\" type=\"button\" >Click to copy</button>  "
         data_html+="</div>"
