@@ -5,8 +5,10 @@ WORKDIR /home/socrat_user
 COPY requirements.txt requirements.txt
 
 RUN python -m venv env
+RUN env/bin/pip install -U pip
+
 RUN \
- apk add --no-cache gcc musl-dev python3-dev libffi-dev  openssl-dev postgresql-libs make && \
+ apk add --no-cache gcc musl-dev libffi-dev  openssl-dev postgresql-libs make && \
  apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev
 
 RUN env/bin/pip install -r requirements.txt
