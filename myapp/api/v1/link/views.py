@@ -43,6 +43,7 @@ def make_short_url():
     # Otherwise - many similar entries with same site
     db.session.add(long_to_short_url_from_json)
     db.session.commit()
+    #db.session.flush();
 
     url_shortener = URLShortener()
     long_to_short_url_from_json.short_url = url_shortener.encode(
