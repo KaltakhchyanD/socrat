@@ -1,0 +1,41 @@
+version: '3'
+services:
+    # should review db and change it
+    db:
+        restart: always
+        image: postgres
+        env_file:
+            - db.env
+        volumes:
+            - ~/docker/volumes/postgres:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+    webapp:
+        image: socrat_img
+        build:
+            context: .
+            dockerfile: Dockerfile
+        env_file:
+            - flask.env
+        ports:
+          - "5555:5555"
+        #command: python create_admin.py 
+        depends_on:
+            - db
+    vnginx:
+        image: nginx:latest
+        ports:
+            - "80:80"
+            - "443:443"
+        env_file:
+            - db.env
+        volumes:
+            - ./config/nginx/conf.d:/etc/nginx/conf.d
+            #- ./var/www/dist:/var/www/dist
+            #- ./etc/ssl:/etc/ssl
+        depends_on:
+            - webapp
+
+networks:
+    db_nw:
+        driver: bridge
