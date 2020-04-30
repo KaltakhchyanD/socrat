@@ -82,8 +82,8 @@ def create_app():
                 return redirect(url_for("login_for_admin"))
         return render_template("login.html", form=login_form)
 
-    @admin_required
     @app.route("/admin")
+    @login_required
     def admin_view():
         links = (
             ShortUrl.query.join(ShortUrl.clicks)
