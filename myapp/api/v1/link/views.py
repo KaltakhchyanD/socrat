@@ -17,6 +17,20 @@ def make_short_url():
     # Validate that url is valid
     # If not - return json with 400
     if not validators.url(json_from_request["long_url"]):
+        if not json_from_request["long_url"].startswith(("http://", "https://")):
+            return make_response(
+                jsonify(
+                    {
+                        "errors": [
+                            {
+                                "code": 3,
+                                "message": "URL should start with 'http://' or 'https://'",
+                            }
+                        ]
+                    }
+                ),
+                400,
+            )
         return make_response(
             jsonify({"errors": [{"code": 1, "message": "Bad long url"}]}), 400
         )
@@ -29,7 +43,7 @@ def make_short_url():
                     "errors": [
                         {
                             "code": 2,
-                            "message": "I know what u did there! Thats not cool!",
+                            "message": "I know what u did there! Thats not cool! (Don't try to shortify this site!)",
                         }
                     ]
                 }
@@ -43,7 +57,7 @@ def make_short_url():
     # Otherwise - many similar entries with same site
     db.session.add(long_to_short_url_from_json)
     db.session.commit()
-    #db.session.flush();
+    # db.session.flush();
 
     url_shortener = URLShortener()
     long_to_short_url_from_json.short_url = url_shortener.encode(

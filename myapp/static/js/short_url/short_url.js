@@ -98,7 +98,8 @@ class Controller{
                 let error_code = error_json['errors'][0]["code"];
                 if (error_code==1){
                     this.view.show_bad_long_url();
-                } else if (error_code==2) {
+                //} else if (error_code==2) {
+                } else{
                     this.view.show_custom_400_error(error_json['errors'][0]["message"]);
                 }
 
