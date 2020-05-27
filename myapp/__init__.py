@@ -16,9 +16,9 @@ from myapp.api.v1.link.views import blueprint as short_link_blueprint
 from myapp.forms import LoginForm
 
 
-def create_app():
+def create_app(config_object):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config_object)
     db.init_app(app)
     ma.init_app(app)
     migrate = Migrate(app, db)
@@ -63,7 +63,7 @@ def create_app():
 
     @app.route("/admin_login", methods=["GET", "POST"])
     def login_for_admin():
-        print(f"Referer - {request.referrer}")
+        #print(f"Referer - {request.referrer}")
         if current_user.is_authenticated:
             flash("You are already logged in!")
             # NO redirect to referer, coz there is no referer
@@ -97,6 +97,7 @@ def create_app():
     @login_required
     def logout():
         logout_user()
+        flash("You are now logged out!")
         return redirect(url_for("index"))
 
     @app.errorhandler(404)

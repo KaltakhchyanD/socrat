@@ -28,3 +28,17 @@ class Config:
     # SQLALCHEMY_ECHO = True
     SECRET_KEY = os.environ.get("SECRET_KEY")
     REMEMBER_COOKIE_DURATION = timedelta(days=5)
+
+
+class TestConfig():
+    """Config for testing"""
+
+    PRODUCTION = False
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://test_user:test_password@localhost:5432/test_db"
+    SECRET_KEY = 'some_secret_key'
+    TESTING=True
+    WTF_CSRF_ENABLED=False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+
