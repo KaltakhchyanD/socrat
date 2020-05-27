@@ -61,7 +61,7 @@ class User(db.Model, UserMixin):
 
 
 def create_user(username, password):
-    user = User(username=username, role="user")
+    user = User(username=username)
     user.set_password(password)
     db.session.add(user)
     db.session.commit()
