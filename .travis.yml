@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.6"
+  - "3.7"
+  - "3.8"
+services:
+  - postgresql
+install:
+  - pip3 install -r requirements.txt
+before_script:
+  - source create_db_user.sh
+script:
+  - python3 -m pytest --cov=myapp --cov-report=xml
